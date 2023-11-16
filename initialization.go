@@ -76,3 +76,26 @@ func printPlayground(tab [][]int) error {
 
 	return nil
 }
+
+func convert1Dto2D(tab []int) ([][]int, error) {
+	if tab == nil {
+		return nil, nil
+	}
+
+	lenght := 3 /* Size of the tab out */
+	var res [][]int
+	tmp := 0
+
+	/* Checking if conversion is doable */
+	tabLenght := len(tab)
+	if (tabLenght*tabLenght)%lenght != 0 {
+		return nil, errors.New("wrong entry slice size")
+	}
+
+	for i := 0; i < lenght; i++ {
+		for j := 0; j < lenght; j++ {
+			res[i][j] = tab[tmp]
+			tmp++
+		}
+	}
+}
