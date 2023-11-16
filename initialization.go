@@ -32,11 +32,15 @@ func pickANumberInATab(tab []int) ([]int, int, error) {
 }
 
 /* Displays the playground */
-func printPlayground(tab [][]int) {
+func printPlayground(tab [][]int) error {
+	if tab == nil {
+		return errors.New("no slice specified")
+	}
+
 	lenght := 4
 	/* On affiche la barre du haut */
-	fmt.Printf("   ┌")
-	for i := 0; i < lenght-1; i++ {
+	fmt.Printf("┌")
+	for i := 0; i < lenght-2; i++ {
 		fmt.Printf("───┬")
 	}
 	fmt.Printf("───┐\n")
@@ -44,7 +48,7 @@ func printPlayground(tab [][]int) {
 	for i := 0; i < lenght-1; i++ {
 
 		/* Affichage de la ligne */
-		for j := 0; j < lenght; j++ {
+		for j := 0; j < lenght-1; j++ {
 			if tab[i][j] == 0 {
 				fmt.Printf("│   ")
 			} else {
@@ -54,9 +58,9 @@ func printPlayground(tab [][]int) {
 		fmt.Printf("│\n")
 
 		/* Affichage de la ligne séparatrice */
-		if i < lenght-1 {
-			fmt.Printf("   ├")
-			for k := 0; k < lenght-1; k++ {
+		if i < lenght-2 {
+			fmt.Printf("├")
+			for k := 0; k < lenght-2; k++ {
 				fmt.Printf("───┼")
 			}
 			fmt.Printf("───┤\n")
@@ -64,9 +68,11 @@ func printPlayground(tab [][]int) {
 	}
 
 	/* Affichage de la dernière ligne */
-	fmt.Printf("   └")
-	for i := 0; i < lenght-1; i++ {
-		printf("───┴")
+	fmt.Printf("└")
+	for i := 0; i < lenght-2; i++ {
+		fmt.Printf("───┴")
 	}
 	fmt.Printf("───┘\n")
+
+	return nil
 }
