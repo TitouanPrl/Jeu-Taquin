@@ -98,4 +98,6 @@ func convert1Dto2D(tab []int) ([][]int, error) {
 			tmp++
 		}
 	}
+
+	return res, nil
 }
