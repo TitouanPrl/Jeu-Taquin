@@ -77,13 +77,13 @@ func printPlayground(tab [][]int) error {
 	return nil
 }
 
-func convert1Dto2D(tab []int) ([][]int, error) {
+func convert1Dto2D(tab []int) (*[3][3]int, error) {
 	if tab == nil {
 		return nil, nil
 	}
 
-	lenght := 3 /* Size of the tab out */
-	var res [][]int
+	const lenght int = 3 /* Size of the tab out */
+	var res [lenght][lenght]int
 	tmp := 0
 
 	/* Checking if conversion is doable */
@@ -99,5 +99,5 @@ func convert1Dto2D(tab []int) ([][]int, error) {
 		}
 	}
 
-	return res, nil
+	return &res, nil
 }
