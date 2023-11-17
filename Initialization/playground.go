@@ -1,4 +1,4 @@
-package main
+package Initialization
 
 import (
 	"errors"
@@ -23,8 +23,8 @@ func randomizeTab() []int {
 	return tab
 }
 
-/* printPlayground displays the playground */
-func printPlayground(tab *[3][3]int) error {
+/* PrintPlayground displays the playground */
+func PrintPlayground(tab *[3][3]int) error {
 	if tab == nil {
 		return errors.New("no slice specified")
 	}
@@ -95,8 +95,8 @@ func convert1Dto2D(tab []int) (*[3][3]int, error) {
 	return &res, nil
 }
 
-/* setupInitialPlayground set the playgrounds randomly when we launch the game */
-func setupInitialPlayground() (*[3][3]int, error) {
+/* SetupInitialPlayground set the playgrounds randomly when we launch the game */
+func SetupInitialPlayground() (*[3][3]int, error) {
 	tmp := randomizeTab()
 
 	playTab, err := convert1Dto2D(tmp)
@@ -104,7 +104,7 @@ func setupInitialPlayground() (*[3][3]int, error) {
 		return nil, err
 	}
 
-	err = printPlayground(playTab)
+	err = PrintPlayground(playTab)
 	if err != nil {
 		return nil, err
 	}

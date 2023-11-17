@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"JeuTaquin/Game"
+	"JeuTaquin/Initialization"
+	"fmt"
+)
 
 func main() {
 	/* Ask which solving method to use */
@@ -18,23 +22,19 @@ func main() {
 	}
 	fmt.Println("Vous avez choisi la méthode de résolution :", input)
 
-	if input == 1 {
-		/* EXECUTE MAN */
-	} else {
-		/* EXECUTE IA */
-	}
-	/*test := [][]int{
-		{0, 1, 2},
-		{3, 4, 5},
-		{6, 7, 8},
-	} */
-
-	test := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
-
-	res, err := convert1Dto2D(test)
+	/* Initializing the first tab and the game configuration */
+	playTab, err := Initialization.SetupInitialPlayground()
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(*res)
+	if input == 1 {
+		err = Game.GameManual(*playTab)
+		if err != nil {
+			panic(err)
+		}
+	} else {
+		/* EXECUTE IA */
+	}
+
 }
