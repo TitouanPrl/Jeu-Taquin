@@ -52,6 +52,7 @@ func roundManual(playTab [3][3]int, nbCoup int) ([3][3]int, bool, error) {
 		nextTab, err = MoveItem(playTab, cellToPlay)
 		if nextTab == [3][3]int{} {
 			fmt.Println("La case choisie n'est pas un coup possible, veuillez réessayer")
+			fmt.Println("Erreur : ", err)
 		}
 	}
 
@@ -64,11 +65,11 @@ func roundManual(playTab [3][3]int, nbCoup int) ([3][3]int, bool, error) {
 	return nextTab, win, nil
 }
 
-/* askCellToPlay ask which cell the player wants to moove */
+/* askCellToPlay ask which cell the player wants to move */
 func askCellToPlay() (int, error) {
 	var input int
 
-	fmt.Println("Quel tuile souhaitez-vous déplacer ?")
+	fmt.Printf("\n Quel tuile souhaitez-vous déplacer ? \n")
 
 	_, err := fmt.Scanln(&input)
 	if err != nil {

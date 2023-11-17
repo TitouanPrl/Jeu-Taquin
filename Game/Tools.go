@@ -46,7 +46,7 @@ func MoveItem(tab [3][3]int, item int) ([3][3]int, error) {
 	deltaX := abs(itemX - zeroX)
 	deltaY := abs(itemY - zeroY)
 
-	if !(deltaX == 1 && deltaY == 0) || !(deltaX == 0 && deltaY == 1) {
+	if !(deltaX == 1 && deltaY == 0) && !(deltaX == 0 && deltaY == 1) {
 		return [3][3]int{}, errors.New("les cases ne sont pas voisines")
 	}
 
