@@ -104,11 +104,6 @@ func SetupInitialPlayground() (*[3][3]int, error) {
 		return nil, err
 	}
 
-	err = PrintPlayground(playTab)
-	if err != nil {
-		return nil, err
-	}
-
 	return playTab, nil
 
 }

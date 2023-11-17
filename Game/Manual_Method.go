@@ -12,15 +12,17 @@ func GameManual(playTab [3][3]int) error {
 	var win bool
 	var err error
 
-	fmt.Println("Coup numéro ", nbCoup)
-
 	for {
-		playTab, win, err = roundManual(playTab, nbCoup)
+		Initialization.CallClearTerminal()
+
+		err = Initialization.PrintPlayground(&playTab)
 		if err != nil {
 			return err
 		}
 
-		err = Initialization.PrintPlayground(&playTab)
+		fmt.Println("Coup numéro ", nbCoup)
+
+		playTab, win, err = roundManual(playTab, nbCoup)
 		if err != nil {
 			return err
 		}
@@ -69,7 +71,7 @@ func roundManual(playTab [3][3]int, nbCoup int) ([3][3]int, bool, error) {
 func askCellToPlay() (int, error) {
 	var input int
 
-	fmt.Printf("\n Quel tuile souhaitez-vous déplacer ? \n")
+	fmt.Printf("\nQuel tuile souhaitez-vous déplacer ? \n")
 
 	_, err := fmt.Scanln(&input)
 	if err != nil {
@@ -77,7 +79,7 @@ func askCellToPlay() (int, error) {
 	} else if input <= 0 || input > 8 {
 		return 0, errors.New("erreur de saisie")
 	}
-	fmt.Println("Vous avez choisi la tuile ", input)
+	fmt.Printf("Vous avez choisi la tuile %v \n\n", input)
 
 	return input, nil
 }

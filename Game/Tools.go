@@ -76,7 +76,9 @@ func checkWinCondition(tab [3][3]int, nbCoup int) (bool, error) {
 		}
 	}
 
-	fmt.Println("Victoire ! Félicitiations vous avez réussi à triompher du Taquin en :", nbCoup)
+	if win {
+		fmt.Println("Victoire ! Félicitiations vous avez réussi à triompher du Taquin en :", nbCoup)
+	}
 
 	return win, nil
 }
