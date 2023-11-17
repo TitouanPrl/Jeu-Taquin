@@ -4,35 +4,27 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
+	"time"
 )
 
-/* pickANumberInATab returns a random number in a slice */
-func pickANumberInATab(tab []int) ([]int, int, error) {
-	if tab == nil {
-		return nil, 0, errors.New("there is no tab in")
-	}
+/* randomizeTab returns a slice with numbers from 0 to 8 randomly sorted */
+func randomizeTab() []int {
+	/* Set the seed for the random */
+	rand.Seed(time.Now().UnixNano())
 
-	/* Getting the number of  numbers still available */
-	tabLenght := len(tab)
-	if tabLenght == 0 {
-		return nil, 0, errors.New("tab empty")
-	}
+	/* Slice to sort */
+	tab := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
 
-	/* Choosing a random num between those left */
-	rand := rand.Intn(tabLenght)
-	res := tab[rand]
+	/* Sorts */
+	rand.Shuffle(len(tab), func(i, j int) {
+		tab[i], tab[j] = tab[j], tab[i]
+	})
 
-	/* Deleting this value from the slice and returning res */
-	if tabLenght > 1 {
-		tab[rand] = tab[tabLenght-1]
-		return tab, res, nil
-	} else {
-		return nil, res, nil
-	}
+	return tab
 }
 
-/* Displays the playground */
-func printPlayground(tab [][]int) error {
+/* printPlayground displays the playground */
+func printPlayground(tab *[3][3]int) error {
 	if tab == nil {
 		return errors.New("no slice specified")
 	}
@@ -77,6 +69,7 @@ func printPlayground(tab [][]int) error {
 	return nil
 }
 
+/* convert1Dto2D converts a 1D slice to a 2D slice */
 func convert1Dto2D(tab []int) (*[3][3]int, error) {
 	if tab == nil {
 		return nil, nil
@@ -100,4 +93,22 @@ func convert1Dto2D(tab []int) (*[3][3]int, error) {
 	}
 
 	return &res, nil
+}
+
+/* setupInitialPlayground set the playgrounds randomly when we launch the game */
+func setupInitialPlayground() (*[3][3]int, error) {
+	tmp := randomizeTab()
+
+	playTab, err := convert1Dto2D(tmp)
+	if err != nil {
+		return nil, err
+	}
+
+	err = printPlayground(playTab)
+	if err != nil {
+		return nil, err
+	}
+
+	return playTab, nil
+
 }
