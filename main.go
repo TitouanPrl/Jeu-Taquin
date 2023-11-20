@@ -29,7 +29,7 @@ func main() {
 	}
 
 	if input == 1 {
-		err = Game.GameManual(*playTab)
+		err = Game.ManualGame(playTab)
 		if err != nil {
 			panic(err)
 		}

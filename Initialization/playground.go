@@ -1,27 +1,11 @@
 package Initialization
 
 import (
+	"JeuTaquin/Game"
 	"errors"
 	"fmt"
 	"math/rand"
-	"time"
 )
-
-/* randomizeTab returns a slice with numbers from 0 to 8 randomly sorted */
-func randomizeTab() []int {
-	/* Set the seed for the random */
-	rand.Seed(time.Now().UnixNano())
-
-	/* Slice to sort */
-	tab := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
-
-	/* Sorts */
-	rand.Shuffle(len(tab), func(i, j int) {
-		tab[i], tab[j] = tab[j], tab[i]
-	})
-
-	return tab
-}
 
 /* PrintPlayground displays the playground */
 func PrintPlayground(tab *[3][3]int) error {
@@ -70,9 +54,9 @@ func PrintPlayground(tab *[3][3]int) error {
 }
 
 /* convert1Dto2D converts a 1D slice to a 2D slice */
-func convert1Dto2D(tab []int) (*[3][3]int, error) {
+func convert1Dto2D(tab []int) ([3][3]int, error) {
 	if tab == nil {
-		return nil, nil
+		return [3][3]int{}, nil
 	}
 
 	const lenght int = 3 /* Size of the tab out */
@@ -82,7 +66,7 @@ func convert1Dto2D(tab []int) (*[3][3]int, error) {
 	/* Checking if conversion is doable */
 	tabLenght := len(tab)
 	if (tabLenght*tabLenght)%lenght != 0 {
-		return nil, errors.New("wrong entry slice size")
+		return [3][3]int{}, errors.New("wrong entry slice size")
 	}
 
 	for i := 0; i < lenght; i++ {
@@ -92,17 +76,27 @@ func convert1Dto2D(tab []int) (*[3][3]int, error) {
 		}
 	}
 
-	return &res, nil
+	return res, nil
 }
 
 /* SetupInitialPlayground set the playgrounds randomly when we launch the game */
-func SetupInitialPlayground() (*[3][3]int, error) {
-	tmp := randomizeTab()
+func SetupInitialPlayground() ([3][3]int, error) {
+	tmp := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
 
 	playTab, err := convert1Dto2D(tmp)
 	if err != nil {
-		return nil, err
+		return [3][3]int{}, err
 	}
+
+	/* Creating a random playground by making doable moves from a sorted playground */
+	for i := 0; i < 10000; i++ {
+		randNb := rand.Intn(8)
+		playTab, err = Game.MoveItem(playTab, randNb)
+		if err != nil {
+		}
+	}
+
+	fmt.Println(playTab)
 
 	return playTab, nil
 

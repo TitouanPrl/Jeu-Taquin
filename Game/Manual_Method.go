@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-func GameManual(playTab [3][3]int) error {
+func ManualGame(playTab [3][3]int) error {
 
 	nbCoup := 1
 	var win bool
