@@ -33,7 +33,7 @@ func main() {
 			panic(err)
 		}
 	} else {
-		/* EXECUTE IA */
+		/* A* */
 	}
 
 }

@@ -7,6 +7,24 @@ type node struct {
 	parent *node
 }
 
+func IAGame(playTab [3][3]int) error {
+	var initialState node
+	initialState.tab = playTab
+
+	answer, err := astar(&initialState)
+	if err != nil {
+		return err
+	}
+
+	for i := 0; i < len(answer); i++ {
+		CallClearTerminal()
+		err = PrintPlayground(&answer[i].tab)
+		if err != nil {
+			return err
+		}
+	}
+}
+
 func astar(initialState *node) ([]*node, error) {
 	var priorityQueue []*node /* Nodes to see */
 	var alreadySeen []*node   /* Nodes already seen */
