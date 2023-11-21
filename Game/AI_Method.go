@@ -1,16 +1,15 @@
 package Game
 
-
 type node struct {
 	tab    [3][3]int
 	cost   int
-	rank   int
+	val    int
 	parent *node
 }
 
 func astar(initialState *node) ([]*node, error) {
-	var priorityQueue []*node	/* Nodes to see */
-	var alreadySeen []*node	/* Nodes already seen */
+	var priorityQueue []*node /* Nodes to see */
+	var alreadySeen []*node   /* Nodes already seen */
 	var err error
 	win := false
 	nbCoup := 0
@@ -33,24 +32,44 @@ func astar(initialState *node) ([]*node, error) {
 		}
 
 		for _, F := range sonsOfNode(actualState) {
-			if !(contains(priorityQueue, F) && contains(alreadySeen, F)) || actualState.cost >  {
+			/* If the node doesn't already exist and is relevant, we create it */
+			if !(contains(priorityQueue, F) && contains(alreadySeen, F)) || (pathCost(initialState, actualState)+pathCost(actualState, F) < pathCost(initialState, F)) {
+				F.cost = pathCost(initialState, actualState) + pathCost(actualState, F)
+				F.val = F.cost + heuristicHammingCost(F)
+				F.parent = actualState
+
+				/* Inserting but not sorting for now */
+				priorityQueue = append(priorityQueue, F)
 			}
+		}
+
+		/* If the queue isn't empty, we check the new head */
+		if len(priorityQueue) > 0 {
+			actualState = priorityQueue[0]
+		}
+		/* If the state is final, then we return it */
+		win, err = checkWinCondition(actualState.tab, nbCoup)
+		if err != nil {
+			return nil, err
+		}
+		if win {
+			return path(initialState, actualState), nil
+		} else {
+			return nil, nil
 		}
 	}
 
-}
-
-func realCost(E *node) int {
-
+	/* Random return */
+	return nil, nil
 }
 
 func heuristicHammingCost(E *node) int {
 	total := len(E.tab) /* Number of cells */
 	lenght := 3
-	wellPlaced := 0	/* Number of well placed cells */
-	tmp := 1 /* Cursor to check if a cell is well placed */
+	wellPlaced := 0 /* Number of well-placed cells */
+	tmp := 1        /* Cursor to check if a cell is well-placed */
 
-	/* Checking the number of cells already well placed */
+	/* Checking the number of cells already well-placed */
 	for i := 0; i < lenght; i++ {
 		for j := 0; j < lenght; j++ {
 			/* Checking the 0 at the end */
@@ -69,9 +88,8 @@ func heuristicHammingCost(E *node) int {
 	return cost
 }
 
-
 /* contains checks if a node is contained in a list */
-func contains(list []*node,  item *node) bool {
+func contains(list []*node, item *node) bool {
 	for _, a := range list {
 		if a == item {
 			return true
@@ -100,7 +118,7 @@ func sonsOfNode(E *node) []*node {
 }
 
 /* path returns a list of the nodes between F and E */
-func path(E, F *node) []*node{
+func path(E, F *node) []*node {
 
 	var ListRes []*node
 	ListRes = append(ListRes, F)
@@ -120,7 +138,7 @@ func path(E, F *node) []*node{
 }
 
 /* pathCost returns the cost from one node to another */
-func pathCost(E, F *node ) int {
+func pathCost(E, F *node) int {
 	if E == F {
 		return 0
 	}
@@ -134,4 +152,3 @@ func pathCost(E, F *node ) int {
 
 	return cost
 }
-
