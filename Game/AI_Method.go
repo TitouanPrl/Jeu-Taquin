@@ -1,15 +1,11 @@
 package Game
 
-import (
-	"container/heap"
-)
 
 type node struct {
 	tab    [3][3]int
 	cost   int
 	rank   int
 	parent *node
-	index  int
 }
 
 func astar(initialState *node) ([]*node, error) {
@@ -104,13 +100,13 @@ func sonsOfNode(E *node) []*node {
 }
 
 /* path returns a list of the nodes between F and E */
-func path(E node, F *node) []*node{
+func path(E, F *node) []*node{
 
 	var ListRes []*node
 	ListRes = append(ListRes, F)
 
 	/* Checks if E is the parent of F, otherwise adds the parent of F to the list */
-	for *F.parent != E {
+	for F.parent != E {
 		ListRes = append(ListRes, F.parent)
 		F = F.parent
 	}
@@ -122,5 +118,20 @@ func path(E node, F *node) []*node{
 
 	return ListRes
 }
+
+/* pathCost returns the cost from one node to another */
+func pathCost(E, F *node ) int {
+	if E == F {
+		return 0
+	}
+
+	cost := 1
+
+	for F.parent != E {
+		cost++
+		F = F.parent
+	}
+
+	return cost
 }
 
