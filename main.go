@@ -2,7 +2,6 @@ package main
 
 import (
 	"JeuTaquin/Game"
-	"JeuTaquin/Initialization"
 	"fmt"
 )
 
@@ -23,7 +22,7 @@ func main() {
 	fmt.Println("Vous avez choisi la méthode de résolution :", input)
 
 	/* Initializing the first tab and the game configuration */
-	playTab, err := Initialization.SetupInitialPlayground()
+	playTab, err := Game.SetupInitialPlayground()
 	if err != nil {
 		panic(err)
 	}

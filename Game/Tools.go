@@ -16,7 +16,7 @@ func abs(x int) int {
 /* MoveItem swap an item with the null item if they're neighbours */
 func MoveItem(tab [3][3]int, item int) ([3][3]int, error) {
 	if item <= 0 {
-		return [3][3]int{}, errors.New("impossible de trouver une case négative")
+		return tab, errors.New("impossible de trouver une case négative")
 	}
 	lenght := 3
 	itemX := -1
@@ -39,7 +39,7 @@ func MoveItem(tab [3][3]int, item int) ([3][3]int, error) {
 
 	/* Checking if values were found */
 	if itemX == -1 || itemY == -1 || zeroX == -1 || zeroY == -1 {
-		return [3][3]int{}, errors.New("les valeurs recherchées n'ont pas été trouvées")
+		return tab, errors.New("les valeurs recherchées n'ont pas été trouvées")
 	}
 
 	/* Checking if they're neighbours */
@@ -47,7 +47,7 @@ func MoveItem(tab [3][3]int, item int) ([3][3]int, error) {
 	deltaY := abs(itemY - zeroY)
 
 	if !(deltaX == 1 && deltaY == 0) && !(deltaX == 0 && deltaY == 1) {
-		return [3][3]int{}, errors.New("les cases ne sont pas voisines")
+		return tab, errors.New("les cases ne sont pas voisines")
 	}
 
 	/* Swapping items */
@@ -63,12 +63,15 @@ func checkWinCondition(tab [3][3]int, nbCoup int) (bool, error) {
 	}
 
 	lenght := 3
-	count := 0
+	count := 1
 	win := true
 
 	/* Checking if the slice is sorted, which would mean the game is won */
 	for i := 0; i < lenght; i++ {
 		for j := 0; j < lenght; j++ {
+			if i == 2 && j == 2 {
+				count = 0
+			}
 			if tab[i][j] != count {
 				win = false
 			}
@@ -78,6 +81,11 @@ func checkWinCondition(tab [3][3]int, nbCoup int) (bool, error) {
 
 	if win {
 		fmt.Println("Victoire ! Félicitiations vous avez réussi à triompher du Taquin en :", nbCoup)
+	}
+
+	err := PrintPlayground(&tab)
+	if err != nil {
+		return false, err
 	}
 
 	return win, nil

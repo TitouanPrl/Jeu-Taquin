@@ -1,4 +1,4 @@
-package Initialization
+package Game
 
 import (
 	"os"

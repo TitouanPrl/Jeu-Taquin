@@ -1,7 +1,6 @@
-package Initialization
+package Game
 
 import (
-	"JeuTaquin/Game"
 	"errors"
 	"fmt"
 	"math/rand"
@@ -91,12 +90,10 @@ func SetupInitialPlayground() ([3][3]int, error) {
 	/* Creating a random playground by making doable moves from a sorted playground */
 	for i := 0; i < 10000; i++ {
 		randNb := rand.Intn(8)
-		playTab, err = Game.MoveItem(playTab, randNb)
+		playTab, err = MoveItem(playTab, randNb)
 		if err != nil {
 		}
 	}
-
-	fmt.Println(playTab)
 
 	return playTab, nil
 

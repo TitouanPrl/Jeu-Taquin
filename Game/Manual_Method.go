@@ -1,7 +1,6 @@
 package Game
 
 import (
-	"JeuTaquin/Initialization"
 	"errors"
 	"fmt"
 )
@@ -13,9 +12,9 @@ func ManualGame(playTab [3][3]int) error {
 	var err error
 
 	for {
-		Initialization.CallClearTerminal()
+		CallClearTerminal()
 
-		err = Initialization.PrintPlayground(&playTab)
+		err = PrintPlayground(&playTab)
 		if err != nil {
 			return err
 		}
