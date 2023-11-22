@@ -27,6 +27,10 @@ func ManualGame(playTab [3][3]int) error {
 		}
 
 		if win == true {
+			err := PrintPlayground(&playTab)
+			if err != nil {
+				return err
+			}
 			break
 		}
 

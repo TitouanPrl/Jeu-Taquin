@@ -33,7 +33,10 @@ func main() {
 			panic(err)
 		}
 	} else {
-		/* A* */
+		err = Game.IAGame(playTab)
+		if err != nil {
+			panic(err)
+		}
 	}
 
 }

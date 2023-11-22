@@ -1,5 +1,7 @@
 package Game
 
+import "time"
+
 type node struct {
 	tab    [3][3]int
 	cost   int
@@ -22,7 +24,10 @@ func IAGame(playTab [3][3]int) error {
 		if err != nil {
 			return err
 		}
+		time.Sleep(1)
 	}
+
+	return nil
 }
 
 func astar(initialState *node) ([]*node, error) {
@@ -43,27 +48,21 @@ func astar(initialState *node) ([]*node, error) {
 		priorityQueue = priorityQueue[:len(priorityQueue)-1]
 		alreadySeen = append(alreadySeen, actualState)
 
-		/* Checking if the state is a win state */
-		win, err = checkWinCondition(actualState.tab, nbCoup)
-		if err != nil {
-			return nil, err
-		}
-
 		for _, F := range sonsOfNode(actualState) {
 			/* If the node doesn't already exist and is relevant, we create it */
-			if !(contains(priorityQueue, F) && contains(alreadySeen, F)) || (pathCost(initialState, actualState)+pathCost(actualState, F) < pathCost(initialState, F)) {
+			if !(contains(priorityQueue, F) || contains(alreadySeen, F)) {
 				F.cost = pathCost(initialState, actualState) + pathCost(actualState, F)
 				F.val = F.cost + heuristicHammingCost(F)
 				F.parent = actualState
 
-				/* Inserting but not sorting for now */
-				priorityQueue = append(priorityQueue, F)
+				/* Inserting and sorting the node in the tab */
+				priorityQueue = insertInSorted(priorityQueue, F)
 			}
 		}
 
 		/* If the queue isn't empty, we check the new head */
 		if len(priorityQueue) > 0 {
-			actualState = priorityQueue[0]
+			actualState = priorityQueue[len(priorityQueue)-1]
 		}
 		/* If the state is final, then we return it */
 		win, err = checkWinCondition(actualState.tab, nbCoup)
@@ -72,13 +71,25 @@ func astar(initialState *node) ([]*node, error) {
 		}
 		if win {
 			return path(initialState, actualState), nil
-		} else {
-			return nil, nil
 		}
 	}
 
 	/* Random return */
 	return nil, nil
+}
+
+/* insertInSorted insert an element at the right place in an array */
+func insertInSorted(sortedArr []*node, elmt *node) []*node {
+	/* Looking for the right index to insert the node */
+	i := 0
+	for i < len(sortedArr) && sortedArr[i].val > elmt.val {
+		i++
+	}
+
+	/* Insert the node at the index */
+	sortedArr = append(sortedArr[:i], append([]*node{elmt}, sortedArr[i:]...)...)
+
+	return sortedArr
 }
 
 func heuristicHammingCost(E *node) int {
@@ -109,7 +120,7 @@ func heuristicHammingCost(E *node) int {
 /* contains checks if a node is contained in a list */
 func contains(list []*node, item *node) bool {
 	for _, a := range list {
-		if a == item {
+		if a.tab == item.tab {
 			return true
 		}
 	}
@@ -119,16 +130,12 @@ func contains(list []*node, item *node) bool {
 /* sonsOfNode returns a list of the sons of a node */
 func sonsOfNode(E *node) []*node {
 	var listSons []*node
-	var tmp node
 
 	/* Checking the moves possible and adding them to the list of sons */
 	for i := 0; i < 9; i++ {
 		tab, err := MoveItem(E.tab, i)
 		if err == nil {
-			tmp.tab = tab
-			tmp.parent = E
-
-			listSons = append(listSons, &tmp)
+			listSons = append(listSons, &node{tab: tab, parent: E})
 		}
 	}
 
