@@ -88,7 +88,7 @@ func SetupInitialPlayground() ([3][3]int, error) {
 	}
 
 	/* Creating a random playground by making doable moves from a sorted playground */
-	for i := 0; i < 10000; i++ {
+	for i := 0; i < 1000; i++ {
 		randNb := rand.Intn(8)
 		playTab, err = MoveItem(playTab, randNb)
 		if err != nil {
