@@ -1,6 +1,9 @@
 package Game
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 type node struct {
 	tab    [3][3]int
@@ -24,8 +27,10 @@ func IAGame(playTab [3][3]int) error {
 		if err != nil {
 			return err
 		}
-		time.Sleep(1)
+		time.Sleep(100 * time.Millisecond)
 	}
+
+	fmt.Println(answer)
 
 	return nil
 }
