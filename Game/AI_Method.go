@@ -1,7 +1,6 @@
 package Game
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -29,8 +28,6 @@ func IAGame(playTab [3][3]int) error {
 		}
 		time.Sleep(100 * time.Millisecond)
 	}
-
-	fmt.Println(answer)
 
 	return nil
 }
