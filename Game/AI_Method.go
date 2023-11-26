@@ -11,6 +11,7 @@ type node struct {
 	parent *node
 }
 
+/* IAGame runs the Taquin Game using A* algorithm */
 func IAGame(playTab [3][3]int) error {
 	var initialState node
 	initialState.tab = playTab
@@ -32,6 +33,7 @@ func IAGame(playTab [3][3]int) error {
 	return nil
 }
 
+/* astar runs the A* algorithm and returns the different nodes between the initial and the solution state */
 func astar(initialState *node) ([]*node, error) {
 	var priorityQueue []*node /* Nodes to see */
 	var alreadySeen []*node   /* Nodes already seen */
@@ -94,6 +96,7 @@ func insertInSorted(sortedArr []*node, elmt *node) []*node {
 	return sortedArr
 }
 
+/* heuristicHammingCost returns the heuristic cost with the Hamming method */
 func heuristicHammingCost(E *node) int {
 	total := len(E.tab) /* Number of cells */
 	lenght := 3
@@ -117,6 +120,38 @@ func heuristicHammingCost(E *node) int {
 	cost := total - wellPlaced
 
 	return cost
+}
+
+/* heuristicManhattanCost returns the heuristic cost with the Manhattan method */
+func heuristicManhattanCost(E *node) int {
+	cost := 0
+
+	/* Using Manhattan formula on each cell */
+	for i := 0; i < 3; i++ {
+		for j := 0; j < 3; j++ {
+			cost += costBetweenCells(j, i, E.tab[i][j])
+		}
+	}
+
+	return cost
+}
+
+/* costBetweenCells returns the distance between coordinate and the right num place using Manhattan formula */
+func costBetweenCells(x1, y1, num int) int {
+	/* Setting the aimed state */
+	soluceTab := [][]int{{1, 2, 3}, {4, 5, 6}, {7, 8, 0}}
+
+	/* Looking for num in the aimed state and calculating the distance */
+	for i := 0; i < 3; i++ {
+		for j := 0; j < 3; j++ {
+			if soluceTab[i][j] == num {
+				distance := abs(j-x1) + abs(i-y1)
+				return distance
+			}
+		}
+	}
+
+	return 0
 }
 
 /* contains checks if a node is contained in a list */
